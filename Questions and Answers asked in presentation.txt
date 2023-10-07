@@ -1,0 +1,68 @@
+1) List of foods that will be expired by 2024/11/07 and the total amount for that foods.
+
+mysql> SELECT Food_name, Exp_date
+    -> FROM FOODS
+    -> WHERE Exp_date <= '2024-11-07';
++----------------+------------+
+| Food_name      | Exp_date   |
++----------------+------------+
+| Instinct       | 2023-11-21 |
+| Canine feast   | 2023-12-21 |
+| High prairie   | 2023-11-11 |
+| Core           | 2023-10-01 |
+| Kitten chaton  | 2024-10-01 |
+| Gravy lovers   | 2024-09-01 |
+| Fit and healty | 2024-08-09 |
+| Maminades      | 2024-11-07 |
+| Betta pellet   | 2023-10-09 |
+| Foodsticks     | 2023-11-09 |
+| Nyjer seed     | 2024-07-09 |
+| PureFun        | 2024-08-19 |
++----------------+------------+
+12 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------------
+
+mysql> SELECT SUM(Price)
+    -> FROM FOODS
+    -> WHERE Exp_date <= '2024-11-07';
++------------+
+| SUM(Price) |
++------------+
+|      32290 |
++------------+
+1 row in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------------
+
+2) Names of the customers, who have ordered 'Bird cage small'
+
+mysql> SELECT CUSTOMER.Cus_name, ORDERS.Order_ID, STORE.Item_name
+    -> FROM ((ORDERS
+    -> INNER JOIN CUSTOMER ON ORDERS.Cus_ID = CUSTOMER.Cus_ID
+    -> INNER JOIN STORE ON ORDERS.Item_ID = STORE.Item_ID))
+    -> WHERE Item_name = 'Bird cage small';
++------------+----------+-----------------+
+| Cus_name   | Order_ID | Item_name       |
++------------+----------+-----------------+
+| M.Dirosan  | ORD0015  | Bird cage small |
+| S.Laksmi   | ORD0016  | Bird cage small |
+| R.Purusoth | ORD0017  | Bird cage small |
++------------+----------+-----------------+
+3 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------------
+
+3) Total amount of the orders made by the customer 'S.Laksmi'
+
+mysql> SELECT CUSTOMER.Cus_name, SUM(ORDERS.Amount)
+    -> FROM ((ORDERS
+    -> INNER JOIN CUSTOMER ON ORDERS.Cus_ID = CUSTOMER.Cus_ID
+    -> ))
+    -> WHERE Cus_name = 'S.Laksmi';
++----------+--------------------+
+| Cus_name | SUM(ORDERS.Amount) |
++----------+--------------------+
+| S.Laksmi |              15700 |
++----------+--------------------+
+1 row in set (0.01 sec)

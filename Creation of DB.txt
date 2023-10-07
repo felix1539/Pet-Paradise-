@@ -1,0 +1,1473 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+6 rows in set (0.05 sec)
+
+mysql> CREATE DATABASE PET_SHOP;
+Query OK, 1 row affected (0.29 sec)
+
+mysql> USE PET_SHOP;
+Database changed
+mysql> CREATE TABLE BLOCKS(BL_no varchar(7) primary key,BL_name varchar(15), Location varchar(50), Facilities varchar(50), Available_items varchar(50));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE ANIMALS(Animal_ID varchar(7) primary key, Animal_name varchar(20), Price float, Origin varchar(20), Sex char, Species varchar(20), More_details varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE BIRDS(Bird_ID varchar(7) primary key, Bird_name varchar(20), Price float, Origin varchar(20), Sex char, Species varchar(20), More_details varchar(50));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE FISHES(Fish_ID varchar(7) primary key, Fish_name varchar(20), Price float, Origin varchar(20), Type varchar(20), Sex char, Size varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE PLANTS(PL_ID varchar(7) primary key, PL_name varchar(20), Origin varchar(20), Type varchar(20), Price float, Care_tips varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE AQ_PLANTS(PLNT_ID VARCHAR(7) primary key,PL_name varchar(20), Origin varchar(20), Type varchar(20), Price float, Details varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE FOODS(Food_ID varchar(7) primary key,Food_name varchar(20), Exp_date date, Price float, Category varchar(20), Type varchar(20), Brand varchar(20), More_details varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE STORE(Item_ID varchar(7) primary key, Item_name varchar(20), Price float, Man_country varchar(10), Details varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE CUSTOMER(Cus_ID varchar(10) primary key,Cus_name varchar(30),Date date, NIC_no varchar(12) unique, Address varchar(50), Tp_no varchar(10), Type varchar(10));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE WORKER(Worker_ID varchar(10) primary key, Name varchar(30), Category varchar(30), Address varchar(50), Salary decimal(10,2), Tp_no varchar(10), Joined_date date);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE SUPPLIES(Sup_ID varchar(10) primary key, Name varchar(30), Address varchar(50), Supply_Item varchar(20), Quantity varchar(20), Unit_price float, Supply_date date, Item_ID varchar(7), foreign key(Item_ID) references STORE(Item_ID));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE STOCK(Stock_ID varchar(10) primary key, Animal_ID varchar(7), Bird_ID varchar(7), Fish_ID varchar(7),PL_ID varchar(7), PLNT_ID varchar(7), Food_ID varchar(7), Count varchar(15), Sup_ID varchar(7), foreign key(Animal_ID) references ANIMALS(Animal_ID),foreign key(Bird_ID) references BIRDS(Bird_ID), foreign key(Fish_ID) references FISHES(Fish_ID), foreign key(PL_ID) references PLANTS(PL_ID), foreign key(PLNT_ID) references AQ_PLANTS(PLNT_ID), foreign key(Food_ID) references FOODS(Food_ID), foreign key(Sup_ID) references SUPPLIES(Sup_ID));
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> CREATE TABLE PAYMENT(Payment_no varchar(15) primary key, Cus_ID varchar(10), Pay_type varchar(20), Amount float, Date date, Status varchar(20), foreign key(Cus_ID) references CUSTOMER(Cus_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE ORDERS(Order_ID varchar(10) primary key, Cus_ID varchar(10), Pay_type varchar(10), Item_ID varchar(7), Quantity varchar(15), Date date, Amount float, Stock_ID varchar(10), foreign key(Cus_ID) references CUSTOMER(Cus_ID), foreign key(Item_ID) references STORE(Item_ID), foreign key(Stock_ID) references STOCK(Stock_ID));
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> CREATE TABLE DELIVERY(Delivery_ID varchar(10)primary key, Worker_ID varchar(10), Order_ID varchar(10), Payment_no varchar(15), Date date, Status varchar(10), foreign key(Worker_ID) references WORKER(Worker_ID), foreign key(Order_ID) references ORDERS(Order_ID), foreign key(Payment_no) references PAYMENT(Payment_no));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> DESC BLOCKS;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| BL_no           | varchar(7)  | NO   | PRI | NULL    |       |
+| BL_name         | varchar(15) | YES  |     | NULL    |       |
+| Location        | varchar(50) | YES  |     | NULL    |       |
+| Facilities      | varchar(50) | YES  |     | NULL    |       |
+| Available_items | varchar(50) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.32 sec)
+
+mysql> DESC ANIMALS;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Animal_ID    | varchar(7)  | NO   | PRI | NULL    |       |
+| Animal_name  | varchar(20) | YES  |     | NULL    |       |
+| Price        | float       | YES  |     | NULL    |       |
+| Origin       | varchar(20) | YES  |     | NULL    |       |
+| Sex          | char(1)     | YES  |     | NULL    |       |
+| Species      | varchar(20) | YES  |     | NULL    |       |
+| More_details | varchar(50) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.33 sec)
+
+mysql> DESC BIRDS;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Bird_ID      | varchar(7)  | NO   | PRI | NULL    |       |
+| Bird_name    | varchar(20) | YES  |     | NULL    |       |
+| Price        | float       | YES  |     | NULL    |       |
+| Origin       | varchar(20) | YES  |     | NULL    |       |
+| Sex          | char(1)     | YES  |     | NULL    |       |
+| Species      | varchar(20) | YES  |     | NULL    |       |
+| More_details | varchar(50) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> DESC FISHES;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Fish_ID   | varchar(7)  | NO   | PRI | NULL    |       |
+| Fish_name | varchar(20) | YES  |     | NULL    |       |
+| Price     | float       | YES  |     | NULL    |       |
+| Origin    | varchar(20) | YES  |     | NULL    |       |
+| Type      | varchar(20) | YES  |     | NULL    |       |
+| Sex       | char(1)     | YES  |     | NULL    |       |
+| Size      | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> DESC PLANTS;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| PL_ID     | varchar(7)  | NO   | PRI | NULL    |       |
+| PL_name   | varchar(20) | YES  |     | NULL    |       |
+| Origin    | varchar(20) | YES  |     | NULL    |       |
+| Type      | varchar(20) | YES  |     | NULL    |       |
+| Price     | float       | YES  |     | NULL    |       |
+| Care_tips | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> DESC AQ_PLANTS;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| PLNT_ID | varchar(7)  | NO   | PRI | NULL    |       |
+| PL_name | varchar(20) | YES  |     | NULL    |       |
+| Origin  | varchar(20) | YES  |     | NULL    |       |
+| Type    | varchar(20) | YES  |     | NULL    |       |
+| Price   | float       | YES  |     | NULL    |       |
+| Details | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> DESC FOODS;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Food_ID      | varchar(7)  | NO   | PRI | NULL    |       |
+| Food_name    | varchar(20) | YES  |     | NULL    |       |
+| Exp_date     | date        | YES  |     | NULL    |       |
+| Price        | float       | YES  |     | NULL    |       |
+| Category     | varchar(20) | YES  |     | NULL    |       |
+| Type         | varchar(20) | YES  |     | NULL    |       |
+| Brand        | varchar(20) | YES  |     | NULL    |       |
+| More_details | varchar(50) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> DESC STOCK;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Stock_ID  | varchar(10) | NO   | PRI | NULL    |       |
+| Animal_ID | varchar(7)  | YES  | MUL | NULL    |       |
+| Bird_ID   | varchar(7)  | YES  | MUL | NULL    |       |
+| Fish_ID   | varchar(7)  | YES  | MUL | NULL    |       |
+| PL_ID     | varchar(7)  | YES  | MUL | NULL    |       |
+| PLNT_ID   | varchar(7)  | YES  | MUL | NULL    |       |
+| Food_ID   | varchar(7)  | YES  | MUL | NULL    |       |
+| Count     | varchar(15) | YES  |     | NULL    |       |
+| Sup_ID    | varchar(7)  | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> DESC CUSTOMER;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Cus_ID   | varchar(10) | NO   | PRI | NULL    |       |
+| Cus_name | varchar(30) | YES  |     | NULL    |       |
+| Date     | date        | YES  |     | NULL    |       |
+| NIC_no   | varchar(12) | YES  | UNI | NULL    |       |
+| Address  | varchar(50) | YES  |     | NULL    |       |
+| Tp_no    | varchar(10) | YES  |     | NULL    |       |
+| Type     | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> DESC WORKER;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| Worker_ID   | varchar(10)   | NO   | PRI | NULL    |       |
+| Name        | varchar(30)   | YES  |     | NULL    |       |
+| Category    | varchar(30)   | YES  |     | NULL    |       |
+| Address     | varchar(50)   | YES  |     | NULL    |       |
+| Salary      | decimal(10,2) | YES  |     | NULL    |       |
+| Tp_no       | varchar(10)   | YES  |     | NULL    |       |
+| Joined_date | date          | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> DESC STORE;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Item_ID     | varchar(7)  | NO   | PRI | NULL    |       |
+| Item_name   | varchar(20) | YES  |     | NULL    |       |
+| Price       | float       | YES  |     | NULL    |       |
+| Man_country | varchar(10) | YES  |     | NULL    |       |
+| Details     | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> DESC SUPPLIES;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Sup_ID      | varchar(10) | NO   | PRI | NULL    |       |
+| Name        | varchar(30) | YES  |     | NULL    |       |
+| Address     | varchar(50) | YES  |     | NULL    |       |
+| Supply_Item | varchar(20) | YES  |     | NULL    |       |
+| Quantity    | varchar(20) | YES  |     | NULL    |       |
+| Unit_price  | float       | YES  |     | NULL    |       |
+| Supply_date | date        | YES  |     | NULL    |       |
+| Item_ID     | varchar(7)  | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> DESC ORDERS;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Order_ID | varchar(10) | NO   | PRI | NULL    |       |
+| Cus_ID   | varchar(10) | YES  | MUL | NULL    |       |
+| Pay_type | varchar(10) | YES  |     | NULL    |       |
+| Item_ID  | varchar(7)  | YES  | MUL | NULL    |       |
+| Quantity | varchar(15) | YES  |     | NULL    |       |
+| Date     | date        | YES  |     | NULL    |       |
+| Amount   | float       | YES  |     | NULL    |       |
+| Stock_ID | varchar(10) | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> DESC PAYMENT;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Payment_no | varchar(15) | NO   | PRI | NULL    |       |
+| Cus_ID     | varchar(10) | YES  | MUL | NULL    |       |
+| Pay_type   | varchar(20) | YES  |     | NULL    |       |
+| Amount     | float       | YES  |     | NULL    |       |
+| Date       | date        | YES  |     | NULL    |       |
+| Status     | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> DESC DELIVERY;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Delivery_ID | varchar(10) | NO   | PRI | NULL    |       |
+| Worker_ID   | varchar(10) | YES  | MUL | NULL    |       |
+| Order_ID    | varchar(10) | YES  | MUL | NULL    |       |
+| Payment_no  | varchar(15) | YES  | MUL | NULL    |       |
+| Date        | date        | YES  |     | NULL    |       |
+| Status      | varchar(10) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO BLOCKS (BL_no,BL_name,Location,Facilities,Available_items) VALUES ('BL0001','Animals','6th mile post, Kaddudai, Manipay','Animals caring, Feeding Consultation, Bathing','Cages, Foods, Medicines, Shampoo, Fashion toys');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BLOCKS (BL_no,BL_name,Location,Facilities,Available_items) VALUES ('BL0002','Birds','Alangulai road, Sandilipay','Birds caring, Feeding Consultation, Breeding','Cages, Foods, Medicines, Fashion toys'),('BL0003','Fishes','Garage lane, Sandilipay west, Chankanai','Vacation care, Tank cleaning, Fish care','Foods, Tanks, Nets, Colour stones'),('BL0004','Plants','Bigbazaar road, KKS Jaffna','Gardening consultation,Watering and Fertilizing','Seeds, Vases, Fertilizers'),('BL0005','Aqua Plants','Kovil lane, Urumbirai west, Urumbirai','Planting consultation, Fertilizing, Designing','Aquatic plants, Fertilizers, Composts');
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO BLOCKS (BL_no,BL_name,Location,Facilities,Available_items) VALUES ('BL0006','Store','Church lane, Manipay west, Manipay','Foods keeping, Selling accessories, Making cages','Cages, Foods, Medicines, Fashion accessories');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM BLOCKS;
++--------+-------------+-----------------------------------------+--------------------------------------------------+------------------------------------------------+
+| BL_no  | BL_name     | Location                                | Facilities                                       | Available_items                                |
++--------+-------------+-----------------------------------------+--------------------------------------------------+------------------------------------------------+
+| BL0001 | Animals     | 6th mile post, Kaddudai, Manipay        | Animals caring, Feeding Consultation, Bathing    | Cages, Foods, Medicines, Shampoo, Fashion toys |
+| BL0002 | Birds       | Alangulai road, Sandilipay              | Birds caring, Feeding Consultation, Breeding     | Cages, Foods, Medicines, Fashion toys          |
+| BL0003 | Fishes      | Garage lane, Sandilipay west, Chankanai | Vacation care, Tank cleaning, Fish care          | Foods, Tanks, Nets, Colour stones              |
+| BL0004 | Plants      | Bigbazaar road, KKS Jaffna              | Gardening consultation,Watering and Fertilizing  | Seeds, Vases, Fertilizers                      |
+| BL0005 | Aqua Plants | Kovil lane, Urumbirai west, Urumbirai   | Planting consultation, Fertilizing, Designing    | Aquatic plants, Fertilizers, Composts          |
+| BL0006 | Store       | Church lane, Manipay west, Manipay      | Foods keeping, Selling accessories, Making cages | Cages, Foods, Medicines, Fashion accessories   |
++--------+-------------+-----------------------------------------+--------------------------------------------------+------------------------------------------------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI001','German Shepherd',30000,'Germany','M','Black,Panda,Sable','Colour black, Age 4 month');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI002','German Shepherd',25000,'Germany','F','Panda,Sable','Colour white, Age 7 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI003','Lion Shepherd',45000,'Germany','M','Belgian malinois','Colour white, Age 6 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI004','Boxer',40000,'Germany','M','Fawn Boxer','Colour white, Age 6 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI005','Pitbull',70000,'USA','M','Pitbull Terrier','Colour grey dots, Age 6 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI006','Pitbull',70000,'USA','F','Pitbull Terrier','Colour white dots, Age 5 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI007','Doberman',30000,'Germany','M','Pinschers','Colour brown, Age 5 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI008','Doberman',40000,'Germany','F','Pinschers','Colour black, Age 6 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI009','Pomeranian',30000,'Poland','M','Spitz','Colour black, Age 6 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0010','Pomeranian',35000,'Poland','M','Spitz','Colour white, Age 10 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0011','American curl cat',10000,'America','M','Whimsical','Colour white, Age 2 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0012','American shothair',8000,'America','M','Whimsical cat','Colour black, Age 3 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0013','Cornish Rex',18000,'UAE','F','Wavy cat','Colour black, Age 4 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0014','Cornish Rex',15000,'London','M','Devon rex cat','Colour black, Age 5 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0015','Japanese Bobtail',13000,'Japan','M','Pom-pom tail cat','Colour grey, Age 6 month, long tail');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0016','Maine coon',33000,'Britain','F','Tufted tail cat','Colour white, Age 8 month, Emarals eyes');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0017','English spot',3000,'London','F','Rabbit','Colour white, Age 8 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0018','Angora',8000,'Ankara','F','Angora wool','Colour black, Age 2 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0019','Angora',8000,'Ankara','M','Angora wool','Colour white, Age 4 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0020','Rex rabbit',5000,'France','M','Rex','Colour white, Age 5 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0021','Long coat', 5000,'India','F','Alderton guinea pig','Colour white, Age 2 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0022','Sheba', 7000,'Australia','F','Guinea pig','Colour black dots, Age 3 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0023','Syrianhamster', 13000,'Syria','M','Guinea pig','Colour white dots, Age 4 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0024','Abyssinian', 23000,'South America','F','Guinea pig','Colour grey dots, Age 6 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ANIMALS (Animal_ID, Animal_name, Price, Origin, Sex, Species, More_Details) VALUES ('ANI0025','Chinese rat', 33000,'China','M','Long ears','Colour grey dots, Age 6 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM ANIMALS;
++-----------+-------------------+-------+---------------+------+---------------------+-----------------------------------------+
+| Animal_ID | Animal_name       | Price | Origin        | Sex  | Species             | More_details                            |
++-----------+-------------------+-------+---------------+------+---------------------+-----------------------------------------+
+| ANI001    | German Shepherd   | 30000 | Germany       | M    | Black,Panda,Sable   | Colour black, Age 4 month               |
+| ANI0010   | Pomeranian        | 35000 | Poland        | M    | Spitz               | Colour white, Age 10 month              |
+| ANI0011   | American curl cat | 10000 | America       | M    | Whimsical           | Colour white, Age 2 month               |
+| ANI0012   | American shothair |  8000 | America       | M    | Whimsical cat       | Colour black, Age 3 month               |
+| ANI0013   | Cornish Rex       | 18000 | UAE           | F    | Wavy cat            | Colour black, Age 4 month               |
+| ANI0014   | Cornish Rex       | 15000 | London        | M    | Devon rex cat       | Colour black, Age 5 month               |
+| ANI0015   | Japanese Bobtail  | 13000 | Japan         | M    | Pom-pom tail cat    | Colour grey, Age 6 month, long tail     |
+| ANI0016   | Maine coon        | 33000 | Britain       | F    | Tufted tail cat     | Colour white, Age 8 month, Emarals eyes |
+| ANI0017   | English spot      |  3000 | London        | F    | Rabbit              | Colour white, Age 8 month               |
+| ANI0018   | Angora            |  8000 | Ankara        | F    | Angora wool         | Colour black, Age 2 month               |
+| ANI0019   | Angora            |  8000 | Ankara        | M    | Angora wool         | Colour white, Age 4 month               |
+| ANI002    | German Shepherd   | 25000 | Germany       | F    | Panda,Sable         | Colour white, Age 7 month               |
+| ANI0020   | Rex rabbit        |  5000 | France        | M    | Rex                 | Colour white, Age 5 month               |
+| ANI0021   | Long coat         |  5000 | India         | F    | Alderton guinea pig | Colour white, Age 2 month               |
+| ANI0022   | Sheba             |  7000 | Australia     | F    | Guinea pig          | Colour black dots, Age 3 month          |
+| ANI0023   | Syrianhamster     | 13000 | Syria         | M    | Guinea pig          | Colour white dots, Age 4 month          |
+| ANI0024   | Abyssinian        | 23000 | South America | F    | Guinea pig          | Colour grey dots, Age 6 month           |
+| ANI0025   | Chinese rat       | 33000 | China         | M    | Long ears           | Colour grey dots, Age 6 month           |
+| ANI003    | Lion Shepherd     | 45000 | Germany       | M    | Belgian malinois    | Colour white, Age 6 month               |
+| ANI004    | Boxer             | 40000 | Germany       | M    | Fawn Boxer          | Colour white, Age 6 month               |
+| ANI005    | Pitbull           | 70000 | USA           | M    | Pitbull Terrier     | Colour grey dots, Age 6 month           |
+| ANI006    | Pitbull           | 70000 | USA           | F    | Pitbull Terrier     | Colour white dots, Age 5 month          |
+| ANI007    | Doberman          | 30000 | Germany       | M    | Pinschers           | Colour brown, Age 5 month               |
+| ANI008    | Doberman          | 40000 | Germany       | F    | Pinschers           | Colour black, Age 6 month               |
+| ANI009    | Pomeranian        | 30000 | Poland        | M    | Spitz               | Colour black, Age 6 month               |
++-----------+-------------------+-------+---------------+------+---------------------+-----------------------------------------+
+25 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR001','African Lovebird',1500,'South africa','M','Long tail','Multi colour, Age 1 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR002','African Lovebird',1800,'South africa','F','Long tail','Sky blue colour, Age 2 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR003','Cockatiel',4000,'Australia','M','Red eye cockatiel','white colour, Age 2 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR004','Finches',900,'Pacific','M','Red eye','multi colour, Age 1 month');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR005','American Silky',6000,'America','M','Long tail rooster','White, Age 1 month');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR006','Java sparrow',2000,'Mexico','F','Long tail sparrow','White, 2 inch');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR007','Eclectic',10000,'USA','M','Rosemary bird','White, 2 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR008','African grey',8000,'Africa','F','Cocktail','Grey, 3 months');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR009','African grey',9000,'Africa','M','Cocktail','White, 3 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0010','Ringneck',19000,'India','M','Parrot','Grey, 2 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0011','Fan tail',10000,'Australia','F','Pigeon','White, 3 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0012','Lotino',100000,'South africa','M','Parrot','Yellow, 3 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0013','Lotino',105000,'South africa','F','Parrot','Yellow, 6 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0014','Parakeet',5000,'Brazil','F','Conya','Yellow, 3 months');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0015','Blacktail',5000,'USA','M','Pigeon','White and black, 5 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0016','Sun conury',9000,'London','M','Love birds','Multi colour, 5 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0017','Sun conury',8000,'Brazil','F','Love birds','Multi colour, 8 months');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0018','Shamo',5000,'Japan','F','Rooster',' Black and white dots colour, 3 months');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BIRDS (Bird_ID, Bird_name, Price, Origin, Sex, Species, More_Details) VALUES ('BIR0019','Cocatoo',45000,'New zealand','F','Cocktail',' Sulphur crested, 5 months');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM BIRDS;
++---------+------------------+--------+--------------+------+-------------------+----------------------------------------+
+| Bird_ID | Bird_name        | Price  | Origin       | Sex  | Species           | More_details                           |
++---------+------------------+--------+--------------+------+-------------------+----------------------------------------+
+| BIR001  | African Lovebird |   1500 | South africa | M    | Long tail         | Multi colour, Age 1 month              |
+| BIR0010 | Ringneck         |  19000 | India        | M    | Parrot            | Grey, 2 months                         |
+| BIR0011 | Fan tail         |  10000 | Australia    | F    | Pigeon            | White, 3 months                        |
+| BIR0012 | Lotino           | 100000 | South africa | M    | Parrot            | Yellow, 3 months                       |
+| BIR0013 | Lotino           | 105000 | South africa | F    | Parrot            | Yellow, 6 months                       |
+| BIR0014 | Parakeet         |   5000 | Brazil       | F    | Conya             | Yellow, 3 months                       |
+| BIR0015 | Blacktail        |   5000 | USA          | M    | Pigeon            | White and black, 5 months              |
+| BIR0016 | Sun conury       |   9000 | London       | M    | Love birds        | Multi colour, 5 months                 |
+| BIR0017 | Sun conury       |   8000 | Brazil       | F    | Love birds        | Multi colour, 8 months                 |
+| BIR0018 | Shamo            |   5000 | Japan        | F    | Rooster           |  Black and white dots colour, 3 months |
+| BIR0019 | Cocatoo          |  45000 | New zealand  | F    | Cocktail          |  Sulphur crested, 5 months             |
+| BIR002  | African Lovebird |   1800 | South africa | F    | Long tail         | Sky blue colour, Age 2 month           |
+| BIR003  | Cockatiel        |   4000 | Australia    | M    | Red eye cockatiel | white colour, Age 2 month              |
+| BIR004  | Finches          |    900 | Pacific      | M    | Red eye           | multi colour, Age 1 month              |
+| BIR005  | American Silky   |   6000 | America      | M    | Long tail rooster | White, Age 1 month                     |
+| BIR006  | Java sparrow     |   2000 | Mexico       | F    | Long tail sparrow | White, 2 inch                          |
+| BIR007  | Eclectic         |  10000 | USA          | M    | Rosemary bird     | White, 2 months                        |
+| BIR008  | African grey     |   8000 | Africa       | F    | Cocktail          | Grey, 3 months                         |
+| BIR009  | African grey     |   9000 | Africa       | M    | Cocktail          | White, 3 months                        |
++---------+------------------+--------+--------------+------+-------------------+----------------------------------------+
+19 rows in set (0.35 sec)
+
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS001','Oscar',2400,'New zealand','Fresh water','M',' 3 inch');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS002','Oscar',2000,'South africa','Fresh water','M',' 30cm-40cm');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS003','Angel',2000,'South america','Fresh water','F','10cm');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS004','Gold fish',1000,'USA','Fresh water','M','20cm');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS005','Green chromic',10000,'Japan','Sea water','M','3 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS006','Blue devil',1000,'China','Sea water','F','2 inch');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS007','Fire fish',10000,'China','Sea water','M','3 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS008','Fire fish',8000,'India','Sea water','F','3 inch');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS009','Coral beauty',800,'Singapore','Sea water','M','2 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0010','Tomato clownfish',8000,'Indonesia','Sea water','F','4 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0011','Tomato clownfish',5000,'Japan','Sea water','M','2 inch');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0012','Cat fish',500,'Sri Lanka','Fresh water','M','1 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0013','Cat fish',500,'Sri Lanka','Fresh water','F','1 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0014','Chillie red Arona',5000,'Sri Lanka','Fresh water','F','1 feet');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0015','Tank cleaner',300,'India','Fresh water','M','3 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0016','Elephant ear',900,'Indonesia','Fresh water','F','6 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0017','Tank cleaner',600,'India','Fresh water','M','2 inch');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FISHES (Fish_ID, Fish_name, Price, Origin, Type, Sex, Size) VALUES ('FIS0018','Chillie red Arona',15000,'Britain','Fresh water','M','3 feet');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM FISHES;
++---------+-------------------+-------+---------------+-------------+------+------------+
+| Fish_ID | Fish_name         | Price | Origin        | Type        | Sex  | Size       |
++---------+-------------------+-------+---------------+-------------+------+------------+
+| FIS001  | Oscar             |  2400 | New zealand   | Fresh water | M    |  3 inch    |
+| FIS0010 | Tomato clownfish  |  8000 | Indonesia     | Sea water   | F    | 4 inch     |
+| FIS0011 | Tomato clownfish  |  5000 | Japan         | Sea water   | M    | 2 inch     |
+| FIS0012 | Cat fish          |   500 | Sri Lanka     | Fresh water | M    | 1 inch     |
+| FIS0013 | Cat fish          |   500 | Sri Lanka     | Fresh water | F    | 1 inch     |
+| FIS0014 | Chillie red Arona |  5000 | Sri Lanka     | Fresh water | F    | 1 feet     |
+| FIS0015 | Tank cleaner      |   300 | India         | Fresh water | M    | 3 inch     |
+| FIS0016 | Elephant ear      |   900 | Indonesia     | Fresh water | F    | 6 inch     |
+| FIS0017 | Tank cleaner      |   600 | India         | Fresh water | M    | 2 inch     |
+| FIS0018 | Chillie red Arona | 15000 | Britain       | Fresh water | M    | 3 feet     |
+| FIS002  | Oscar             |  2000 | South africa  | Fresh water | M    |  30cm-40cm |
+| FIS003  | Angel             |  2000 | South america | Fresh water | F    | 10cm       |
+| FIS004  | Gold fish         |  1000 | USA           | Fresh water | M    | 20cm       |
+| FIS005  | Green chromic     | 10000 | Japan         | Sea water   | M    | 3 inch     |
+| FIS006  | Blue devil        |  1000 | China         | Sea water   | F    | 2 inch     |
+| FIS007  | Fire fish         | 10000 | China         | Sea water   | M    | 3 inch     |
+| FIS008  | Fire fish         |  8000 | India         | Sea water   | F    | 3 inch     |
+| FIS009  | Coral beauty      |   800 | Singapore     | Sea water   | M    | 2 inch     |
++---------+-------------------+-------+---------------+-------------+------+------------+
+18 rows in set (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0001','African violet','Africa','Flowerplant',2000,'16øc - 24øc are ideal,Fast draining soil mix');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0002','Amaryllis','Indiana','BulbFlower',1300,'13øc is ideal,Fertilized soil mix');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0003','Barberton daisy','Manipay','StrikingFlower',3300,'Indoors sunlight,moist soil,average temp');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0004','Flaming sword','Australia','StrikingFlower',4300,'Indoors sunlight,moist soil,average temp');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0005','Areca palm','Japan','Arching fronds',2800,'Indoors sunlight,Over water will affect growth');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0006','Goose foot','India','Philodendorn',4800,'Any decent peat based soil mix will suffice');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0007','Century plant','USA','succulent plant',40000,'grow well in a room consists of a normal humidity');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0008','Jelly beans','Australia','Xmas cheer leaves',4000,'Some direct light,Normal room humidity is fine');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0009','Horsetails','China','Vascular',5000,'high humidity,Moist but well-drained soil');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0010','licania','China','Vascular',5000,'high humidity,Moist but well-drained soil');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0011','licania','Brazil','Vascular',8000,'high humidity,Moist soil');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0012','lilac','Austria','Flowering',18000,'Room humidity,without extreme temperatures');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0013','Star apple','West indies','Tropical',7000,'Tropical tree, late winter or early spring');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0014','Salvia','Oman','Drugs',9000,'layer of compost once every spring');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0015','Orchids','New york','flowering',700,'fed regularly, balanced fertilizing');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PLANTS (PL_ID,PL_name,Origin,Type,Price,Care_tips) VALUES ('PT0016','Fabales','Brazil','flowering',4500,'nitrogen balance in the soil');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT001','White lily','North Africa','flowering',2300,'Plant in a basket with the crown');
+Query OK, 1 row affected (0.29 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT002','Azolla','New zealand','Mosquito ferns',200,'Warn temp,prefer slow-moving water');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT003','Spatterdock','Canada','Medical',1000,'High water need, Full sun');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT004','Moneywort','Taiwan','Freshwater',100,'amphibious and can grow above water and underwater');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT005','Hornwort','Russia','Freshwater',200,'fast grower,floating or rooted in aquarium');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT006','Pygmy ChainSword','USA','Freshwater',500,'fast grower,Narrow Leaf');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT007','Indian Waterweed','India','Freshwater',200,'temperature of 18-30 øC');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT008','Anubia Nana','Autralia','Seawater',100,' quickly remove any die leaves');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT009','Java Fern','India','freshwater',1000,'under low to moderate light conditions');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT010','Java moss','Amazon','freshwater',6000,'can grow upto 4 inches,moderate light conditions');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT011','Cryptocoryne','Austria','freshwater',2500,'Water Conditions 72-82ø F,light level medium');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT012','Elodea Densa','Russia','Aquarium',400,'Water Conditions 59-82ø F,light level low');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AQ_PLANTS (PLNT_ID,PL_name,Origin,Type,Price,Details) VALUES ('APT013','Red Ludwigia','Indonesia','Freshwater',200,'Midground,light level low-moderate');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM AQ_PLANTS;
++---------+------------------+--------------+----------------+-------+----------------------------------------------------+
+| PLNT_ID | PL_name          | Origin       | Type           | Price | Details                                            |
++---------+------------------+--------------+----------------+-------+----------------------------------------------------+
+| APT001  | White lily       | North Africa | flowering      |  2300 | Plant in a basket with the crown                   |
+| APT002  | Azolla           | New zealand  | Mosquito ferns |   200 | Warn temp,prefer slow-moving water                 |
+| APT003  | Spatterdock      | Canada       | Medical        |  1000 | High water need, Full sun                          |
+| APT004  | Moneywort        | Taiwan       | Freshwater     |   100 | amphibious and can grow above water and underwater |
+| APT005  | Hornwort         | Russia       | Freshwater     |   200 | fast grower,floating or rooted in aquarium         |
+| APT006  | Pygmy ChainSword | USA          | Freshwater     |   500 | fast grower,Narrow Leaf                            |
+| APT007  | Indian Waterweed | India        | Freshwater     |   200 | temperature of 18-30 øC                            |
+| APT008  | Anubia Nana      | Autralia     | Seawater       |   100 |  quickly remove any die leaves                     |
+| APT009  | Java Fern        | India        | freshwater     |  1000 | under low to moderate light conditions             |
+| APT010  | Java moss        | Amazon       | freshwater     |  6000 | can grow upto 4 inches,moderate light conditions   |
+| APT011  | Cryptocoryne     | Austria      | freshwater     |  2500 | Water Conditions 72-82ø F,light level medium       |
+| APT012  | Elodea Densa     | Russia       | Aquarium       |   400 | Water Conditions 59-82ø F,light level low          |
+| APT013  | Red Ludwigia     | Indonesia    | Freshwater     |   200 | Midground,light level low-moderate                 |
++---------+------------------+--------------+----------------+-------+----------------------------------------------------+
+13 rows in set (0.00 sec)
+
+mysql> SELECT * FROM PLANTS;
++--------+-----------------+-------------+-------------------+-------+---------------------------------------------------+
+| PL_ID  | PL_name         | Origin      | Type              | Price | Care_tips                                         |
++--------+-----------------+-------------+-------------------+-------+---------------------------------------------------+
+| PT0001 | African violet  | Africa      | Flowerplant       |  2000 | 16øc - 24øc are ideal,Fast draining soil mix      |
+| PT0002 | Amaryllis       | Indiana     | BulbFlower        |  1300 | 13øc is ideal,Fertilized soil mix                 |
+| PT0003 | Barberton daisy | Manipay     | StrikingFlower    |  3300 | Indoors sunlight,moist soil,average temp          |
+| PT0004 | Flaming sword   | Australia   | StrikingFlower    |  4300 | Indoors sunlight,moist soil,average temp          |
+| PT0005 | Areca palm      | Japan       | Arching fronds    |  2800 | Indoors sunlight,Over water will affect growth    |
+| PT0006 | Goose foot      | India       | Philodendorn      |  4800 | Any decent peat based soil mix will suffice       |
+| PT0007 | Century plant   | USA         | succulent plant   | 40000 | grow well in a room consists of a normal humidity |
+| PT0008 | Jelly beans     | Australia   | Xmas cheer leaves |  4000 | Some direct light,Normal room humidity is fine    |
+| PT0009 | Horsetails      | China       | Vascular          |  5000 | high humidity,Moist but well-drained soil         |
+| PT0010 | licania         | China       | Vascular          |  5000 | high humidity,Moist but well-drained soil         |
+| PT0011 | licania         | Brazil      | Vascular          |  8000 | high humidity,Moist soil                          |
+| PT0012 | lilac           | Austria     | Flowering         | 18000 | Room humidity,without extreme temperatures        |
+| PT0013 | Star apple      | West indies | Tropical          |  7000 | Tropical tree, late winter or early spring        |
+| PT0014 | Salvia          | Oman        | Drugs             |  9000 | layer of compost once every spring                |
+| PT0015 | Orchids         | New york    | flowering         |   700 | fed regularly, balanced fertilizing               |
+| PT0016 | Fabales         | Brazil      | flowering         |  4500 | nitrogen balance in the soil                      |
++--------+-----------------+-------------+-------------------+-------+---------------------------------------------------+
+16 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0001','Wellness','2024-12-31',3600,'Dog food','SuperNutrients','Wellnessway','Skin and coat health,Energy');
+Query OK, 1 row affected (0.30 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0002','Instinct','2023-11-21',3000,'Dog food','Grain free','The Raw','With real beef, All life stages');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0003','Canine feast','2023-12-21',6000,'Dog food','Chiken meal','Nature logic','High protein and calsium');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0004','High prairie','2023-11-11',2000,'Dog food','Grain free','Taste of wild','Roated bison and venison');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0005','The blue','2025-11-11',8000,'Dog food','Rice recipe','The blue buffalo','Chicken and brown rice recipe');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0006','Pro plan','2025-08-01',11000,'Dog food','Special nutrients','Purina','Large breed formula');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0007','Core','2023-10-01',2000,'Cat food','High protein','Wellness','Protein rich and vitamin inclusive');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0008','Kitten chaton','2024-10-01',2500,'Cat food','Calsium rich','Royal chain','Nutrients and dry protein, and vitamin inclusive');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0009','Gravy lovers','2024-09-01',2700,'Cat food','Turkey feast','Fancy feast','Roasted turkey favour gewy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0010','Fit and healty','2024-08-09',3700,'Cat food','Royal canin','Digest sensitive','Roasted chicken amd fish');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0011','Maminades','2024-11-07',7700,'Cat food','Felix','Crispy jelly','Organic jelly with vegetable formula');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0012','Organix','2025-11-07',6700,'Cat food','Castor and pollux','Grain free','Chicken and sweet potato recipe');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0013','Tetramin','2025-11-09',700,'Fish food','Tropical flakes','Tetra','Dry fish food with high protein');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0014','Betta pellet','2023-10-09',200,'Fish food','Tropical pellets','OmegaOne','Dry fish food with high protein');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0015','Foodsticks','2023-11-09',900,'Fish food','Top feeding','Hikari','High protein and muti colour');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0016','Cichlid','2024-11-09',320,'Fish food','Micro pellet','OmegaOne','High protein and shrimp pellet');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0017','Nyjer seed','2024-07-09',700,'Parrot food','Seeds','Wagners','High protein and feather colour');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0018','Mealworms','2025-07-09',690,'Bird food','Shrimp worms','Kaytee','High protein and nutrients');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0019','PureFun','2024-08-19',890,'Bird food','Bugs','wild and weight','Live food with calsium formula');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0020','SkyGold','2025-08-19',1000,'Bird food','Aviary food','SkyGold','Cage and aviary food');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0021','Spirulina20','2025-09-19',1200,'Fish food','Flakes','TetraPhyll','For every day feeding, high density');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO FOODS (Food_ID,Food_name,Exp_date,Price,Category,Type,Brand,More_details) VALUES ('F0022','FlakesOne','2025-12-09',880,'Fish food','Flakes','Marineland','For every day feeding, colour enhancing');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM FOODS;
++---------+----------------+------------+-------+-------------+-------------------+------------------+--------------------------------------------------+
+| Food_ID | Food_name      | Exp_date   | Price | Category    | Type              | Brand            | More_details                                     |
++---------+----------------+------------+-------+-------------+-------------------+------------------+--------------------------------------------------+
+| F0001   | Wellness       | 2024-12-31 |  3600 | Dog food    | SuperNutrients    | Wellnessway      | Skin and coat health,Energy                      |
+| F0002   | Instinct       | 2023-11-21 |  3000 | Dog food    | Grain free        | The Raw          | With real beef, All life stages                  |
+| F0003   | Canine feast   | 2023-12-21 |  6000 | Dog food    | Chiken meal       | Nature logic     | High protein and calsium                         |
+| F0004   | High prairie   | 2023-11-11 |  2000 | Dog food    | Grain free        | Taste of wild    | Roated bison and venison                         |
+| F0005   | The blue       | 2025-11-11 |  8000 | Dog food    | Rice recipe       | The blue buffalo | Chicken and brown rice recipe                    |
+| F0006   | Pro plan       | 2025-08-01 | 11000 | Dog food    | Special nutrients | Purina           | Large breed formula                              |
+| F0007   | Core           | 2023-10-01 |  2000 | Cat food    | High protein      | Wellness         | Protein rich and vitamin inclusive               |
+| F0008   | Kitten chaton  | 2024-10-01 |  2500 | Cat food    | Calsium rich      | Royal chain      | Nutrients and dry protein, and vitamin inclusive |
+| F0009   | Gravy lovers   | 2024-09-01 |  2700 | Cat food    | Turkey feast      | Fancy feast      | Roasted turkey favour gewy                       |
+| F0010   | Fit and healty | 2024-08-09 |  3700 | Cat food    | Royal canin       | Digest sensitive | Roasted chicken amd fish                         |
+| F0011   | Maminades      | 2024-11-07 |  7700 | Cat food    | Felix             | Crispy jelly     | Organic jelly with vegetable formula             |
+| F0012   | Organix        | 2025-11-07 |  6700 | Cat food    | Castor and pollux | Grain free       | Chicken and sweet potato recipe                  |
+| F0013   | Tetramin       | 2025-11-09 |   700 | Fish food   | Tropical flakes   | Tetra            | Dry fish food with high protein                  |
+| F0014   | Betta pellet   | 2023-10-09 |   200 | Fish food   | Tropical pellets  | OmegaOne         | Dry fish food with high protein                  |
+| F0015   | Foodsticks     | 2023-11-09 |   900 | Fish food   | Top feeding       | Hikari           | High protein and muti colour                     |
+| F0016   | Cichlid        | 2024-11-09 |   320 | Fish food   | Micro pellet      | OmegaOne         | High protein and shrimp pellet                   |
+| F0017   | Nyjer seed     | 2024-07-09 |   700 | Parrot food | Seeds             | Wagners          | High protein and feather colour                  |
+| F0018   | Mealworms      | 2025-07-09 |   690 | Bird food   | Shrimp worms      | Kaytee           | High protein and nutrients                       |
+| F0019   | PureFun        | 2024-08-19 |   890 | Bird food   | Bugs              | wild and weight  | Live food with calsium formula                   |
+| F0020   | SkyGold        | 2025-08-19 |  1000 | Bird food   | Aviary food       | SkyGold          | Cage and aviary food                             |
+| F0021   | Spirulina20    | 2025-09-19 |  1200 | Fish food   | Flakes            | TetraPhyll       | For every day feeding, high density              |
+| F0022   | FlakesOne      | 2025-12-09 |   880 | Fish food   | Flakes            | Marineland       | For every day feeding, colour enhancing          |
++---------+----------------+------------+-------+-------------+-------------------+------------------+--------------------------------------------------+
+22 rows in set (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR001','T.Saranjan','2021-08-12','992142723V','Garage road, Sanguvely,Jaffna', '0716875421','Normal');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR002','M.Dirosan','2021-08-14','994142725V','Garage road, Sandilipay,Thellipalai', '0713344521','Normal');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR003','T.Karunyan','2021-08-16','894142725V','Kovil road, Sandilipay,Thellipalai', '0728344521','Normal');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR004','A.Abira','2021-08-26','974142679V','Kovil road, Ilavalai,Saanthai', '0725558121','Normal');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR005','S.Velavan','2021-08-26','989878679V','Bigbazaar road, Sandilipay ,Vavuniya', '071558121','Normal');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR006','S.Nandipati','2021-08-26','909878679V','Bigbazaar road, Manipay ,Vavuniya', '0779058121','Normal');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL001','S.Laksmi','2021-08-27','919867543V','Navalar veethy, Sanguvely ,Vavuniya', '0778808121','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL002','A.Srinu','2021-08-29','919888540V','Kaluwani road, Sanuthi ,Mannar', '0718121121','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL003','D.Vamsi','2021-08-30','924518540V','Kalmunai road, Jaffna ,Mannar', '0713245321','Online');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL004','R.Kamsikan','2021-09-02','974518540V','Kallady road, Aavarangal ,Mannar', '0723245885','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL005','R.Kemaladha','2021-09-04','994518940V','Kaithady road, Aavarangal ,Kilinochchi', '0767845885','Online');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL006','J.Diron','2021-09-04','940518940V','Ponnalai road, Kaddudai ,Mullaitheevu', '0707899880','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL007','A.Dilani','2021-09-09','907518940V','Ponnalai road, Kaddudai ,Mullaitheevu', '0707877480','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL008','M.Latha','2021-09-09','199751890723','Ponnuthurai road, Kallady ,Mannar', '0777097480','Online');
+Query OK, 1 row affected (0.28 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL009','R.Purusoth','2021-09-10','199451890327','Kaamini road, Karainagar,Mannar', '0776937480','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL0010','L.Purusoth','2021-09-11','198755550327','Kaithady road, Karainagar,Mannar', '0719937480','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL0011','M.Gajini','2021-09-12','199059950317','Kaithady road, Karainagar,Mannar', '0710037480','Online');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL0012','A.Surya','2021-09-13','198159442317','Kaithady road, Karainagar,Mannar', '0710674319','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL0013','S.Arumugam','2021-09-13','197759442317','Olive road, Karainagar, Kaithady', '0728974319','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('ONL0014','S.Arivudai','2021-09-17','959442317V','Olive road, Karainagar, Kaithady', '0728555319','Online');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR007','M.Anbur','2021-09-17','979448827V','Avarangal road, Kaddudai, Manipay', '0718544123','Normal');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR008','A.Dirosan','2021-09-18','998448827V','Avarangal road, Kaddudai, Manipay', '0747764123','Normal');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR009','L.Saran','2021-09-28','995525827V','Avarangal road, Kaddudai, Manipay', '0701234123','Normal');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUSTOMER (Cus_ID,Cus_name,Date,NIC_no,Address,Tp_no,Type) VALUES ('NOR0010','R.Rahul','2021-09-29','941525827V','Anapandhi road, Karaitheevu, Manipay', '0772134123','Normal');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM CUSTOMER;
++---------+-------------+------------+--------------+----------------------------------------+------------+--------+
+| Cus_ID  | Cus_name    | Date       | NIC_no       | Address                                | Tp_no      | Type   |
++---------+-------------+------------+--------------+----------------------------------------+------------+--------+
+| NOR001  | T.Saranjan  | 2021-08-12 | 992142723V   | Garage road, Sanguvely,Jaffna          | 0716875421 | Normal |
+| NOR0010 | R.Rahul     | 2021-09-29 | 941525827V   | Anapandhi road, Karaitheevu, Manipay   | 0772134123 | Normal |
+| NOR002  | M.Dirosan   | 2021-08-14 | 994142725V   | Garage road, Sandilipay,Thellipalai    | 0713344521 | Normal |
+| NOR003  | T.Karunyan  | 2021-08-16 | 894142725V   | Kovil road, Sandilipay,Thellipalai     | 0728344521 | Normal |
+| NOR004  | A.Abira     | 2021-08-26 | 974142679V   | Kovil road, Ilavalai,Saanthai          | 0725558121 | Normal |
+| NOR005  | S.Velavan   | 2021-08-26 | 989878679V   | Bigbazaar road, Sandilipay ,Vavuniya   | 071558121  | Normal |
+| NOR006  | S.Nandipati | 2021-08-26 | 909878679V   | Bigbazaar road, Manipay ,Vavuniya      | 0779058121 | Normal |
+| NOR007  | M.Anbur     | 2021-09-17 | 979448827V   | Avarangal road, Kaddudai, Manipay      | 0718544123 | Normal |
+| NOR008  | A.Dirosan   | 2021-09-18 | 998448827V   | Avarangal road, Kaddudai, Manipay      | 0747764123 | Normal |
+| NOR009  | L.Saran     | 2021-09-28 | 995525827V   | Avarangal road, Kaddudai, Manipay      | 0701234123 | Normal |
+| ONL001  | S.Laksmi    | 2021-08-27 | 919867543V   | Navalar veethy, Sanguvely ,Vavuniya    | 0778808121 | Online |
+| ONL0010 | L.Purusoth  | 2021-09-11 | 198755550327 | Kaithady road, Karainagar,Mannar       | 0719937480 | Online |
+| ONL0011 | M.Gajini    | 2021-09-12 | 199059950317 | Kaithady road, Karainagar,Mannar       | 0710037480 | Online |
+| ONL0012 | A.Surya     | 2021-09-13 | 198159442317 | Kaithady road, Karainagar,Mannar       | 0710674319 | Online |
+| ONL0013 | S.Arumugam  | 2021-09-13 | 197759442317 | Olive road, Karainagar, Kaithady       | 0728974319 | Online |
+| ONL0014 | S.Arivudai  | 2021-09-17 | 959442317V   | Olive road, Karainagar, Kaithady       | 0728555319 | Online |
+| ONL002  | A.Srinu     | 2021-08-29 | 919888540V   | Kaluwani road, Sanuthi ,Mannar         | 0718121121 | Online |
+| ONL003  | D.Vamsi     | 2021-08-30 | 924518540V   | Kalmunai road, Jaffna ,Mannar          | 0713245321 | Online |
+| ONL004  | R.Kamsikan  | 2021-09-02 | 974518540V   | Kallady road, Aavarangal ,Mannar       | 0723245885 | Online |
+| ONL005  | R.Kemaladha | 2021-09-04 | 994518940V   | Kaithady road, Aavarangal ,Kilinochchi | 0767845885 | Online |
+| ONL006  | J.Diron     | 2021-09-04 | 940518940V   | Ponnalai road, Kaddudai ,Mullaitheevu  | 0707899880 | Online |
+| ONL007  | A.Dilani    | 2021-09-09 | 907518940V   | Ponnalai road, Kaddudai ,Mullaitheevu  | 0707877480 | Online |
+| ONL008  | M.Latha     | 2021-09-09 | 199751890723 | Ponnuthurai road, Kallady ,Mannar      | 0777097480 | Online |
+| ONL009  | R.Purusoth  | 2021-09-10 | 199451890327 | Kaamini road, Karainagar,Mannar        | 0776937480 | Online |
++---------+-------------+------------+--------------+----------------------------------------+------------+--------+
+24 rows in set (0.00 sec)
+
+INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE001','L.Lavanya','Cleaner','Kalviyankaadu west, Kopay',18000,'0770711534','2019-08-01');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE002','A.Mathura','Cleaner','Kopay junction, Kopay',18000,'0770721539','2019-08-02');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE003','A.Arulmoli','Cleaner','Topaz road, Kalviyankaadu, Jaffna',17500,'0777654539','2020-10-04');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE005','S.Mathuri','Cleaner','Alankulaai road,Sandilipay, Jaffna',17500,'0711539439','2020-10-06');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE007','N.Daveena','Cleaner','Potpathy road,Arasady, Jaffna',17500,'0703409439','2020-10-06');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE008','T.Narmathan','Cleaner','Potkuli road, Avarankaal, Mullaitheevu',17000,'0703111039','2020-10-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE009','S.Diron','Cleaner','Potkuli road, Avarankaal, Mullaitheevu',17000,'0703217839','2020-10-10');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE0010','S.Aravinth','Cleaner','Ponnalai veethy, Thoppu, Mullaitheevu',17000,'0767897839','2020-10-12');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('CLE0011','L.Dilakshi','Cleaner','Ponnalai veethy, Thoppu, Mullaitheevu',16000,'0765787119','2020-10-13');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK001','M.Mathuran','Store Keeper','Arali veethy, Vaddakachi, Mullaitheevu',19000,'0763267890','2019-10-13');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK002','A.Nilavu','Store Keeper','Ariyalai veethy, Vaddakachi, Mullaitheevu',19000,'0712367890','2019-10-13');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK003','S.Amuthan','Store Keeper','Ariyalai veethy, Vaddakachi, Mullaitheevu',18500,'0729967882','2019-12-18');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK004','N.Arul','Store Keeper','Maniyam veethy, Kallady, Vavuniya',18500,'0710967876','2019-12-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK005','K.Uma','Store Keeper','Maniyam veethy, Kallady, Vavuniya',17500,'0728976501','2020-03-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK006','K.Dalas','Store Keeper','Aboobakkar veethy, Kallady, Vavuniya',17500,'0787954233','2020-03-25');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK007','K.Perumal','Store Keeper','Aboobakkar veethy, Kallady, Vavuniya',17000,'0787957786','2020-03-29');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('STK008','M.Uthayan','Store Keeper','Thoppu veethy, Kallady, Jaffna',17500,'0787957790','2020-06-29');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB001','A.Uruthiran','Delivery boy','Thoppu veethy, Kallady, Jaffna',16500,'0719057790','2019-05-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB002','S.Ulakan','Delivery boy','Veeraiya veethy, Mattakuli, Mannar',16500,'0719043120','2019-05-30');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB003','V.Yathur','Delivery boy','Veeraiya veethy, Mattakuli, Mannar',16500,'0709876020','2019-05-30');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB004','V.Raju','Delivery boy','Ellaalan veethy, Mattakuli, Jaffna',16500,'0727806020','2019-06-30');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB005','K.Murali','Delivery boy','Ellaalan veethy, Maniyar park, Jaffna',16000,'0721189045','2019-08-08');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB006','T.Ravikumar','Delivery boy','Vinayagar veethy, Maniyanthotam, Jaffna',16000,'0723232045','2019-08-25');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('DEB007','K.Saravanan','Delivery boy','Ulagar road, Maniyanthotam, Mullaitheevu',15000,'0723111045','2020-08-25');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('PC001','L.Saravanan','Pet Care','Arulmoli road, Kadaloor, Mullaitheevu',16000,'0709811098','2019-08-07');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('PC002','M.Arooran','Pet Care','Arulmoli road, Kadaloor, Mullaitheevu',16000,'0727651431','2019-08-10');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('PC003','D.Thilakan','Pet Care','Anaipanthy road, Velanai, Jaffna',16000,'0719991431','2019-08-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WORKER (Worker_ID,Name,Category,Address,Salary,Tp_no,Joined_date) VALUES ('PC004','T.Sarmila','Pet Care','Anaipanthy road, Velanai, Jaffna',15000,'0789011114','2019-12-27');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM WORKER;
++-----------+-------------+--------------+-------------------------------------------+----------+------------+-------------+
+| Worker_ID | Name        | Category     | Address                                   | Salary   | Tp_no      | Joined_date |
++-----------+-------------+--------------+-------------------------------------------+----------+------------+-------------+
+| CLE001    | L.Lavanya   | Cleaner      | Kalviyankaadu west, Kopay                 | 18000.00 | 0770711534 | 2019-08-01  |
+| CLE0010   | S.Aravinth  | Cleaner      | Ponnalai veethy, Thoppu, Mullaitheevu     | 17000.00 | 0767897839 | 2020-10-12  |
+| CLE0011   | L.Dilakshi  | Cleaner      | Ponnalai veethy, Thoppu, Mullaitheevu     | 16000.00 | 0765787119 | 2020-10-13  |
+| CLE002    | A.Mathura   | Cleaner      | Kopay junction, Kopay                     | 18000.00 | 0770721539 | 2019-08-02  |
+| CLE003    | A.Arulmoli  | Cleaner      | Topaz road, Kalviyankaadu, Jaffna         | 17500.00 | 0777654539 | 2020-10-04  |
+| CLE005    | S.Mathuri   | Cleaner      | Alankulaai road,Sandilipay, Jaffna        | 17500.00 | 0711539439 | 2020-10-06  |
+| CLE007    | N.Daveena   | Cleaner      | Potpathy road,Arasady, Jaffna             | 17500.00 | 0703409439 | 2020-10-06  |
+| CLE008    | T.Narmathan | Cleaner      | Potkuli road, Avarankaal, Mullaitheevu    | 17000.00 | 0703111039 | 2020-10-10  |
+| CLE009    | S.Diron     | Cleaner      | Potkuli road, Avarankaal, Mullaitheevu    | 17000.00 | 0703217839 | 2020-10-10  |
+| DEB001    | A.Uruthiran | Delivery boy | Thoppu veethy, Kallady, Jaffna            | 16500.00 | 0719057790 | 2019-05-20  |
+| DEB002    | S.Ulakan    | Delivery boy | Veeraiya veethy, Mattakuli, Mannar        | 16500.00 | 0719043120 | 2019-05-30  |
+| DEB003    | V.Yathur    | Delivery boy | Veeraiya veethy, Mattakuli, Mannar        | 16500.00 | 0709876020 | 2019-05-30  |
+| DEB004    | V.Raju      | Delivery boy | Ellaalan veethy, Mattakuli, Jaffna        | 16500.00 | 0727806020 | 2019-06-30  |
+| DEB005    | K.Murali    | Delivery boy | Ellaalan veethy, Maniyar park, Jaffna     | 16000.00 | 0721189045 | 2019-08-08  |
+| DEB006    | T.Ravikumar | Delivery boy | Vinayagar veethy, Maniyanthotam, Jaffna   | 16000.00 | 0723232045 | 2019-08-25  |
+| DEB007    | K.Saravanan | Delivery boy | Ulagar road, Maniyanthotam, Mullaitheevu  | 15000.00 | 0723111045 | 2020-08-25  |
+| PC001     | L.Saravanan | Pet Care     | Arulmoli road, Kadaloor, Mullaitheevu     | 16000.00 | 0709811098 | 2019-08-07  |
+| PC002     | M.Arooran   | Pet Care     | Arulmoli road, Kadaloor, Mullaitheevu     | 16000.00 | 0727651431 | 2019-08-10  |
+| PC003     | D.Thilakan  | Pet Care     | Anaipanthy road, Velanai, Jaffna          | 16000.00 | 0719991431 | 2019-08-20  |
+| PC004     | T.Sarmila   | Pet Care     | Anaipanthy road, Velanai, Jaffna          | 15000.00 | 0789011114 | 2019-12-27  |
+| STK001    | M.Mathuran  | Store Keeper | Arali veethy, Vaddakachi, Mullaitheevu    | 19000.00 | 0763267890 | 2019-10-13  |
+| STK002    | A.Nilavu    | Store Keeper | Ariyalai veethy, Vaddakachi, Mullaitheevu | 19000.00 | 0712367890 | 2019-10-13  |
+| STK003    | S.Amuthan   | Store Keeper | Ariyalai veethy, Vaddakachi, Mullaitheevu | 18500.00 | 0729967882 | 2019-12-18  |
+| STK004    | N.Arul      | Store Keeper | Maniyam veethy, Kallady, Vavuniya         | 18500.00 | 0710967876 | 2019-12-20  |
+| STK005    | K.Uma       | Store Keeper | Maniyam veethy, Kallady, Vavuniya         | 17500.00 | 0728976501 | 2020-03-20  |
+| STK006    | K.Dalas     | Store Keeper | Aboobakkar veethy, Kallady, Vavuniya      | 17500.00 | 0787954233 | 2020-03-25  |
+| STK007    | K.Perumal   | Store Keeper | Aboobakkar veethy, Kallady, Vavuniya      | 17000.00 | 0787957786 | 2020-03-29  |
+| STK008    | M.Uthayan   | Store Keeper | Thoppu veethy, Kallady, Jaffna            | 17500.00 | 0787957790 | 2020-06-29  |
++-----------+-------------+--------------+-------------------------------------------+----------+------------+-------------+
+28 rows in set (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT001','Plastic bowl rubber',1600,'China','Non-slip due to rubber base ring');
+Query OK, 1 row affected (0.29 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT002','Fun ball',900,'China','Natural rubber mint flavour massages the gums');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT003','Cat Collar',750,'China','Elastic and continuously adjustable');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT004','Junior Harness',2800,'Japan','Junior Harness');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT005','Food Dispenser',6500,'China','Automatic Food Dispenser 48 hr timer for one meal');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT006','Transport Box',4800,'China','plastic with handle ventilation slits');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT007','Riva Carrier',15800,'China','padded net inserts with zipper in the front');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT008','Edoardo Cat Tower',16800,'China','50 cmFloor area: › 33 cmHeight: 50 cm');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT009','Trekking Harness',7500,'China','all-round soft padding neck and belly straps');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0010','Car Seat Cover',8500,'China','back seat anti-slip coating more hold for the dog');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0011','Litter Scoop',500,'France','Litter Scoop for Clumping Litter plastic');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0012','Playing rope',300,'USA','Playing-Rope for Dogs cotton/polyester');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0013','Tooth Brush 4 Pcs',2300,'German','precise cleaning of front teeth and molars');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0014','Hygiene Spray 50ml',1600,'German','for dog spraying on the teeth');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0015','Ear Care Wipes',2200,'France','dogs, cats and other animals with gentle cleaning');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0016','Salmon Oil',4000,'France','for healthy skin and a shining fur');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STORE (Item_ID,Item_name,Price,Man_country,Details) VALUES ('IT0017','Bird cage small',40000,'China','Small birds protector');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM STORE;
++---------+---------------------+-------+-------------+---------------------------------------------------+
+| Item_ID | Item_name           | Price | Man_country | Details                                           |
++---------+---------------------+-------+-------------+---------------------------------------------------+
+| IT001   | Plastic bowl rubber |  1600 | China       | Non-slip due to rubber base ring                  |
+| IT0010  | Car Seat Cover      |  8500 | China       | back seat anti-slip coating more hold for the dog |
+| IT0011  | Litter Scoop        |   500 | France      | Litter Scoop for Clumping Litter plastic          |
+| IT0012  | Playing rope        |   300 | USA         | Playing-Rope for Dogs cotton/polyester            |
+| IT0013  | Tooth Brush 4 Pcs   |  2300 | German      | precise cleaning of front teeth and molars        |
+| IT0014  | Hygiene Spray 50ml  |  1600 | German      | for dog spraying on the teeth                     |
+| IT0015  | Ear Care Wipes      |  2200 | France      | dogs, cats and other animals with gentle cleaning |
+| IT0016  | Salmon Oil          |  4000 | France      | for healthy skin and a shining fur                |
+| IT0017  | Bird cage small     | 40000 | China       | Small birds protector                             |
+| IT002   | Fun ball            |   900 | China       | Natural rubber mint flavour massages the gums     |
+| IT003   | Cat Collar          |   750 | China       | Elastic and continuously adjustable               |
+| IT004   | Junior Harness      |  2800 | Japan       | Junior Harness                                    |
+| IT005   | Food Dispenser      |  6500 | China       | Automatic Food Dispenser 48 hr timer for one meal |
+| IT006   | Transport Box       |  4800 | China       | plastic with handle ventilation slits             |
+| IT007   | Riva Carrier        | 15800 | China       | padded net inserts with zipper in the front       |
+| IT008   | Edoardo Cat Tower   | 16800 | China       | 50 cmFloor area: › 33 cmHeight: 50 cm             |
+| IT009   | Trekking Harness    |  7500 | China       | all-round soft padding neck and belly straps      |
++---------+---------------------+-------+-------------+---------------------------------------------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP001','T.Aravinth','Inuvil road,Inuvil, Jaffna','Bird cage small',20,4000,'2021-10-07','IT0017');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP002','T.Karunyan','Amman road,Urumbirai, Jaffna','Salmon oil',10,3000,'2021-10-07','IT0016');
+Query OK, 1 row affected (0.28 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP003','A.Mathu','Kaali road,Udupitty, Jaffna','Playing rope',300,200,'2021-10-27','IT0012');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP004','D.Karthi','Church road,Mallakm, Vavuniya','Litter Scoop',300,450,'2021-11-27','IT0011');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP005','S.Rajan','Market lane, Chankanai, Vavuniya','Transport box',50,4500,'2021-11-29','IT006');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP006','G.Yasotharan','Bandanayaka lane, Manipay, Vavuniya','Transport box',80,4300,'2021-12-29','IT006');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP007','Y.Ganesh','Kovil road, Sandilipay, Mannar','Trekking Harness',180,7000,'2021-06-29','IT009');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP008','ABC pvt','Postoffice road, Sandilipay, Mannar','Trekking Harness',40,7200,'2021-08-29','IT009');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP009','Felix pvt','Kalmunai road, Kallady, Batticalo','Trekking Harness',68,7200,'2021-010-22','IT009');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SUPPLIES (Sup_ID,Name,Address,Supply_Item,Quantity,Unit_price,Supply_date,Item_ID) VALUES ('SUP0010','Kaaman pvt','Kalmunai road, Kallady, Batticalo','Trekking Harness',20,7300,'2021-11-29','IT009');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM SUPPLIES;
++---------+--------------+-------------------------------------+------------------+----------+------------+-------------+---------+
+| Sup_ID  | Name         | Address                             | Supply_Item      | Quantity | Unit_price | Supply_date | Item_ID |
++---------+--------------+-------------------------------------+------------------+----------+------------+-------------+---------+
+| SUP001  | T.Aravinth   | Inuvil road,Inuvil, Jaffna          | Bird cage small  | 20       |       4000 | 2021-10-07  | IT0017  |
+| SUP0010 | Kaaman pvt   | Kalmunai road, Kallady, Batticalo   | Trekking Harness | 20       |       7300 | 2021-11-29  | IT009   |
+| SUP002  | T.Karunyan   | Amman road,Urumbirai, Jaffna        | Salmon oil       | 10       |       3000 | 2021-10-07  | IT0016  |
+| SUP003  | A.Mathu      | Kaali road,Udupitty, Jaffna         | Playing rope     | 300      |        200 | 2021-10-27  | IT0012  |
+| SUP004  | D.Karthi     | Church road,Mallakm, Vavuniya       | Litter Scoop     | 300      |        450 | 2021-11-27  | IT0011  |
+| SUP005  | S.Rajan      | Market lane, Chankanai, Vavuniya    | Transport box    | 50       |       4500 | 2021-11-29  | IT006   |
+| SUP006  | G.Yasotharan | Bandanayaka lane, Manipay, Vavuniya | Transport box    | 80       |       4300 | 2021-12-29  | IT006   |
+| SUP007  | Y.Ganesh     | Kovil road, Sandilipay, Mannar      | Trekking Harness | 180      |       7000 | 2021-06-29  | IT009   |
+| SUP008  | ABC pvt      | Postoffice road, Sandilipay, Mannar | Trekking Harness | 40       |       7200 | 2021-08-29  | IT009   |
+| SUP009  | Felix pvt    | Kalmunai road, Kallady, Batticalo   | Trekking Harness | 68       |       7200 | 2021-10-22  | IT009   |
++---------+--------------+-------------------------------------+------------------+----------+------------+-------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Bird_ID,Count) VALUES ('ST001','BIR003','7');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Bird_ID,Count) VALUES ('ST002','BIR004','15');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Bird_ID,Count) VALUES ('ST003','BIR007','95');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST004','ANI004','19');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST005','ANI005','79');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST006','ANI002','9');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST007','ANI001','2');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST008','ANI002','10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST009','ANI0011','10');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST0010','ANI0012','60');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Animal_ID,Count) VALUES ('ST0011','ANI007','12');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count) VALUES ('ST0012','FIS007','12');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count) VALUES ('ST0013','FIS001','62');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count) VALUES ('ST0014','FIS002','90');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count,Sup_ID) VALUES ('ST0015','FIS007','90','SUP003');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count,Sup_ID) VALUES ('ST0016','FIS003','50','SUP001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count,Sup_ID) VALUES ('ST0017','FIS0010','87','SUP001');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count,Sup_ID) VALUES ('ST0018','FIS0011','17','SUP004');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count,Sup_ID) VALUES ('ST0019','FIS0011','80','SUP006');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Fish_ID,Count,Sup_ID) VALUES ('ST0020','FIS001','40','SUP006');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PL_ID,Count,Sup_ID) VALUES ('ST0021','PT0008','40','SUP006');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PL_ID,Count,Sup_ID) VALUES ('ST0022','PT0010','20','SUP002');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PL_ID,Count,Sup_ID) VALUES ('ST0023','PT0010','20','SUP004');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PL_ID,Count,Sup_ID) VALUES ('ST0024','PT0016','83','SUP004');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PL_ID,Count,Sup_ID) VALUES ('ST0025','PT0013','7','SUP009');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PL_ID,Count,Sup_ID) VALUES ('ST0026','PT0001','79','SUP009');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PLNT_ID,Count,Sup_ID) VALUES ('ST0027','APT010','59','SUP009');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PLNT_ID,Count,Sup_ID) VALUES ('ST0028','APT010','5','SUP001');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PLNT_ID,Count,Sup_ID) VALUES ('ST0029','APT012','53','SUP002');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,PLNT_ID,Count,Sup_ID) VALUES ('ST0030','APT010','83','SUP002');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0031','F0002','13','SUP002');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0032','F0001','47 tins','SUP009');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0033','F0007','7packets','SUP009');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0034','F0005','89packets','SUP0010');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0035','F0008','78L','SUP0010');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0036','F0006','8L','SUP001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0037','F0004','84','SUP001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STOCK (Stock_ID,Food_ID,Count,Sup_ID) VALUES ('ST0038','F0007','84packets','SUP001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from STOCK;
++----------+-----------+---------+---------+--------+---------+---------+-----------+---------+
+| Stock_ID | Animal_ID | Bird_ID | Fish_ID | PL_ID  | PLNT_ID | Food_ID | Count     | Sup_ID  |
++----------+-----------+---------+---------+--------+---------+---------+-----------+---------+
+| ST001    | NULL      | BIR003  | NULL    | NULL   | NULL    | NULL    | 7         | NULL    |
+| ST0010   | ANI0012   | NULL    | NULL    | NULL   | NULL    | NULL    | 60        | NULL    |
+| ST0011   | ANI007    | NULL    | NULL    | NULL   | NULL    | NULL    | 12        | NULL    |
+| ST0012   | NULL      | NULL    | FIS007  | NULL   | NULL    | NULL    | 12        | NULL    |
+| ST0013   | NULL      | NULL    | FIS001  | NULL   | NULL    | NULL    | 62        | NULL    |
+| ST0014   | NULL      | NULL    | FIS002  | NULL   | NULL    | NULL    | 90        | NULL    |
+| ST0015   | NULL      | NULL    | FIS007  | NULL   | NULL    | NULL    | 90        | SUP003  |
+| ST0016   | NULL      | NULL    | FIS003  | NULL   | NULL    | NULL    | 50        | SUP001  |
+| ST0017   | NULL      | NULL    | FIS0010 | NULL   | NULL    | NULL    | 87        | SUP001  |
+| ST0018   | NULL      | NULL    | FIS0011 | NULL   | NULL    | NULL    | 17        | SUP004  |
+| ST0019   | NULL      | NULL    | FIS0011 | NULL   | NULL    | NULL    | 80        | SUP006  |
+| ST002    | NULL      | BIR004  | NULL    | NULL   | NULL    | NULL    | 15        | NULL    |
+| ST0020   | NULL      | NULL    | FIS001  | NULL   | NULL    | NULL    | 40        | SUP006  |
+| ST0021   | NULL      | NULL    | NULL    | PT0008 | NULL    | NULL    | 40        | SUP006  |
+| ST0022   | NULL      | NULL    | NULL    | PT0010 | NULL    | NULL    | 20        | SUP002  |
+| ST0023   | NULL      | NULL    | NULL    | PT0010 | NULL    | NULL    | 20        | SUP004  |
+| ST0024   | NULL      | NULL    | NULL    | PT0016 | NULL    | NULL    | 83        | SUP004  |
+| ST0025   | NULL      | NULL    | NULL    | PT0013 | NULL    | NULL    | 7         | SUP009  |
+| ST0026   | NULL      | NULL    | NULL    | PT0001 | NULL    | NULL    | 79        | SUP009  |
+| ST0027   | NULL      | NULL    | NULL    | NULL   | APT010  | NULL    | 59        | SUP009  |
+| ST0028   | NULL      | NULL    | NULL    | NULL   | APT010  | NULL    | 5         | SUP001  |
+| ST0029   | NULL      | NULL    | NULL    | NULL   | APT012  | NULL    | 53        | SUP002  |
+| ST003    | NULL      | BIR007  | NULL    | NULL   | NULL    | NULL    | 95        | NULL    |
+| ST0030   | NULL      | NULL    | NULL    | NULL   | APT010  | NULL    | 83        | SUP002  |
+| ST0031   | NULL      | NULL    | NULL    | NULL   | NULL    | F0002   | 13        | SUP002  |
+| ST0032   | NULL      | NULL    | NULL    | NULL   | NULL    | F0001   | 47 tins   | SUP009  |
+| ST0033   | NULL      | NULL    | NULL    | NULL   | NULL    | F0007   | 7packets  | SUP009  |
+| ST0034   | NULL      | NULL    | NULL    | NULL   | NULL    | F0005   | 89packets | SUP0010 |
+| ST0035   | NULL      | NULL    | NULL    | NULL   | NULL    | F0008   | 78L       | SUP0010 |
+| ST0036   | NULL      | NULL    | NULL    | NULL   | NULL    | F0006   | 8L        | SUP001  |
+| ST0037   | NULL      | NULL    | NULL    | NULL   | NULL    | F0004   | 84        | SUP001  |
+| ST0038   | NULL      | NULL    | NULL    | NULL   | NULL    | F0007   | 84packets | SUP001  |
+| ST004    | ANI004    | NULL    | NULL    | NULL   | NULL    | NULL    | 19        | NULL    |
+| ST005    | ANI005    | NULL    | NULL    | NULL   | NULL    | NULL    | 79        | NULL    |
+| ST006    | ANI002    | NULL    | NULL    | NULL   | NULL    | NULL    | 9         | NULL    |
+| ST007    | ANI001    | NULL    | NULL    | NULL   | NULL    | NULL    | 2         | NULL    |
+| ST008    | ANI002    | NULL    | NULL    | NULL   | NULL    | NULL    | 10        | NULL    |
+| ST009    | ANI0011   | NULL    | NULL    | NULL   | NULL    | NULL    | 10        | NULL    |
++----------+-----------+---------+---------+--------+---------+---------+-----------+---------+
+38 rows in set (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Item_ID,Quantity,Date,Amount) VALUES ('ORD001','ONL004','CreditCard','IT003','2','2021-08-31',600);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Item_ID,Quantity,Date,Amount) VALUES ('ORD002','ONL006','CreditCard','IT003','5','2021-09-01',1000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Item_ID,Quantity,Date,Amount) VALUES ('ORD003','NOR006','Paypal','IT005','5','2021-09-03',1500);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Item_ID,Quantity,Date,Amount) VALUES ('ORD004','NOR006','Paypal','IT008','2','2021-09-03',100);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Item_ID,Quantity,Date,Amount) VALUES ('ORD005','NOR008','Cash','IT002','8','2021-09-08',1020);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD006','NOR001','Cash','8','2021-09-10',10200,'ST0032');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD007','NOR002','Cash','48','2021-09-10',12200,'ST0022');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD008','ONL002','Paypal','18','2021-09-19',1200,'ST0020');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD009','ONL005','Paypal','57','2021-09-25',12000,'ST0021');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD0010','ONL005','Paypal','7','2021-09-26',2020,'ST0010');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD0011','NOR009','Cash','17','2021-10-26',8000,'ST0011');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Stock_ID) VALUES ('ORD0012','NOR003','Cash','65','2021-10-30',12000,'ST001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0013','NOR003','Cash','5','2021-10-31',3000,'IT003');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0014','NOR008','Cash','65','2021-11-07',11400,'IT0010');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0015','NOR002','Cash','35','2021-11-11',15700,'IT0017');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0016','ONL001','Payoneer','35','2021-11-15',15700,'IT0017');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0017','ONL009','Payoneer','5','2021-11-16',5700,'IT0017');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0018','ONL0010','Payoneer','23','2021-11-26',9700,'IT0016');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0019','ONL004','Paypal','3','2021-11-27',700,'IT0011');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0020','ONL007','Paypal','23','2021-11-29',4700,'IT001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO ORDERS (Order_ID,Cus_ID,Pay_type,Quantity,Date,Amount,Item_ID) VALUES ('ORD0021','ONL002','Paypal','29','2021-12-09',13700,'IT005');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM ORDERS;
++----------+---------+------------+---------+----------+------------+--------+----------+
+| Order_ID | Cus_ID  | Pay_type   | Item_ID | Quantity | Date       | Amount | Stock_ID |
++----------+---------+------------+---------+----------+------------+--------+----------+
+| ORD001   | ONL004  | CreditCard | IT003   | 2        | 2021-08-31 |    600 | NULL     |
+| ORD0010  | ONL005  | Paypal     | NULL    | 7        | 2021-09-26 |   2020 | ST0010   |
+| ORD0011  | NOR009  | Cash       | NULL    | 17       | 2021-10-26 |   8000 | ST0011   |
+| ORD0012  | NOR003  | Cash       | NULL    | 65       | 2021-10-30 |  12000 | ST001    |
+| ORD0013  | NOR003  | Cash       | IT003   | 5        | 2021-10-31 |   3000 | NULL     |
+| ORD0014  | NOR008  | Cash       | IT0010  | 65       | 2021-11-07 |  11400 | NULL     |
+| ORD0015  | NOR002  | Cash       | IT0017  | 35       | 2021-11-11 |  15700 | NULL     |
+| ORD0016  | ONL001  | Payoneer   | IT0017  | 35       | 2021-11-15 |  15700 | NULL     |
+| ORD0017  | ONL009  | Payoneer   | IT0017  | 5        | 2021-11-16 |   5700 | NULL     |
+| ORD0018  | ONL0010 | Payoneer   | IT0016  | 23       | 2021-11-26 |   9700 | NULL     |
+| ORD0019  | ONL004  | Paypal     | IT0011  | 3        | 2021-11-27 |    700 | NULL     |
+| ORD002   | ONL006  | CreditCard | IT003   | 5        | 2021-09-01 |   1000 | NULL     |
+| ORD0020  | ONL007  | Paypal     | IT001   | 23       | 2021-11-29 |   4700 | NULL     |
+| ORD0021  | ONL002  | Paypal     | IT005   | 29       | 2021-12-09 |  13700 | NULL     |
+| ORD003   | NOR006  | Paypal     | IT005   | 5        | 2021-09-03 |   1500 | NULL     |
+| ORD004   | NOR006  | Paypal     | IT008   | 2        | 2021-09-03 |    100 | NULL     |
+| ORD005   | NOR008  | Cash       | IT002   | 8        | 2021-09-08 |   1020 | NULL     |
+| ORD006   | NOR001  | Cash       | NULL    | 8        | 2021-09-10 |  10200 | ST0032   |
+| ORD007   | NOR002  | Cash       | NULL    | 48       | 2021-09-10 |  12200 | ST0022   |
+| ORD008   | ONL002  | Paypal     | NULL    | 18       | 2021-09-19 |   1200 | ST0020   |
+| ORD009   | ONL005  | Paypal     | NULL    | 57       | 2021-09-25 |  12000 | ST0021   |
++----------+---------+------------+---------+----------+------------+--------+----------+
+21 rows in set (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Date,Status) VALUES ('PP001','ONL002','Paypal',13700,'2021-12-09','Paid');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Date,Status) VALUES ('PP002','ONL0010','Payoneer',9700,'2021-11-26','Paid');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Date,Status) VALUES ('PP003','ONL004','CreditCard',600,'2021-09-01','Paid');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Date,Status) VALUES ('PP004','ONL004','Paypal',700,'2021-11-27','Paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Date,Status) VALUES ('PP005','ONL005','Paypal',12000,'2021-09-25','Paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Date,Status) VALUES ('PP006','ONL007','Paypal',4700,'2021-11-29','Paid');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Status) VALUES ('PP007','ONL001','Payoneer',15700,'Not paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Status) VALUES ('PP008','ONL005','Paypal',2020,'Not paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Status) VALUES ('PP009','ONL006','CreditCard',1000,'Not paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Status) VALUES ('PP0010','ONL007','Paypal',4700,'Not paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Status) VALUES ('PP0011','NOR002','Cash',12200,'Not paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PAYMENT (Payment_no,Cus_ID,Pay_type,Amount,Status) VALUES ('PP0012','NOR001','Cash',10200,'Not paid');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM PAYMENT;
++------------+---------+------------+--------+------------+----------+
+| Payment_no | Cus_ID  | Pay_type   | Amount | Date       | Status   |
++------------+---------+------------+--------+------------+----------+
+| PP001      | ONL002  | Paypal     |  13700 | 2021-12-09 | Paid     |
+| PP0010     | ONL007  | Paypal     |   4700 | NULL       | Not paid |
+| PP0011     | NOR002  | Cash       |  12200 | NULL       | Not paid |
+| PP0012     | NOR001  | Cash       |  10200 | NULL       | Not paid |
+| PP002      | ONL0010 | Payoneer   |   9700 | 2021-11-26 | Paid     |
+| PP003      | ONL004  | CreditCard |    600 | 2021-09-01 | Paid     |
+| PP004      | ONL004  | Paypal     |    700 | 2021-11-27 | Paid     |
+| PP005      | ONL005  | Paypal     |  12000 | 2021-09-25 | Paid     |
+| PP006      | ONL007  | Paypal     |   4700 | 2021-11-29 | Paid     |
+| PP007      | ONL001  | Payoneer   |  15700 | NULL       | Not paid |
+| PP008      | ONL005  | Paypal     |   2020 | NULL       | Not paid |
+| PP009      | ONL006  | CreditCard |   1000 | NULL       | Not paid |
++------------+---------+------------+--------+------------+----------+
+12 rows in set (0.00 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Date,Status) VALUES ('DV001','DEB007','ORD0021','PP001','2021-12-19','Delivered');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Date,Status) VALUES ('DV002','DEB005','ORD0018','PP002','2021-11-30','Delivered');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Date,Status) VALUES ('DV003','DEB005','ORD001','PP003','2021-10-02','Delivered');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Status) VALUES ('DV004','DEB002','ORD0020','PP006','Pending');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Status) VALUES ('DV005','DEB002','ORD0016','PP007','Pending');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Status) VALUES ('DV006','DEB006','ORD0010','PP008','Pending');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO DELIVERY (Delivery_ID,Worker_ID,Order_ID,Payment_no,Date,Status) VALUES ('DV007','DEB005','ORD009','PP005','2021-09-29','Delivered');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM DELIVERY;
++-------------+-----------+----------+------------+------------+-----------+
+| Delivery_ID | Worker_ID | Order_ID | Payment_no | Date       | Status    |
++-------------+-----------+----------+------------+------------+-----------+
+| DV001       | DEB007    | ORD0021  | PP001      | 2021-12-19 | Delivered |
+| DV002       | DEB005    | ORD0018  | PP002      | 2021-11-30 | Delivered |
+| DV003       | DEB005    | ORD001   | PP003      | 2021-10-02 | Delivered |
+| DV004       | DEB002    | ORD0020  | PP006      | NULL       | Pending   |
+| DV005       | DEB002    | ORD0016  | PP007      | NULL       | Pending   |
+| DV006       | DEB006    | ORD0010  | PP008      | NULL       | Pending   |
+| DV007       | DEB005    | ORD009   | PP005      | 2021-09-29 | Delivered |
++-------------+-----------+----------+------------+------------+-----------+
+7 rows in set (0.00 sec)
